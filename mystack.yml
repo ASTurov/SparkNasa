@@ -1,0 +1,20 @@
+version: "3"
+services:
+
+  hadoop-master:
+    image: asturov/spark1
+    ports:
+      - "50070:50070"
+      - "8088:8088"
+      - "8080:8080"	
+    deploy:
+      resources:
+        limits:
+          memory: 3000M  
+
+  hadoop-slave0:
+    image: asturov/spark1
+    deploy:
+      resources:
+        limits:
+          memory: 3000M  
