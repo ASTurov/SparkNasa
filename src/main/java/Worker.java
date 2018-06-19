@@ -93,13 +93,12 @@ public final class Worker {
         Dataset<LogData> ds = spark
                 .read().textFile(inputFile)
                 .map(String2LogDataMapper, Encoders.bean(LogData.class));
-//
-        Dataset<Row> myData3 = ds.filter("reply >= 1").filter("reply < 600")
+        
+        Dataset<Row> myData3 = ds.filter("reply >= 1").filter("reply > 400").filter("reply < 600")
                 .groupBy(window(ds.col("timestamp").as("timestamp"), "1 week", "1 day" ))
                 .agg(count("host").as("weekly_avg"))
                 .select("window.start", "window.end", "weekly_avg")
                 .sort("start");
-                //.map(resultMapper, Encoders.STRING())
         myData3.coalesce(1).toJavaRDD().saveAsTextFile(outputDir + "/task3");
     }
 }
